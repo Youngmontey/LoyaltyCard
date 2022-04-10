@@ -1,171 +1,97 @@
-#include<stdio.h>
-
-#include<stdlib.h>
-
-
-void new_report();
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
 
 
-
-struct report
-
-{
-
-    char report_name[30];
-
-
-//report2
-    char creationdate[50];
-    char site_place[30];
-    char activities[50000];
-
-} ;
-void new_report1();
-
-void new_report( );
 typedef struct report report;
-
-int main()
-
+struct report
 {
 
-    int ch;
+    char site_place[50];
+    char creation_date[15];
+    char activities[1000];
+};
 
-    while(1)
+void add_report();
 
-    {
 
-        printf(" MENU:");
 
-        printf("\nTAPEZ <1> Creer un Rapport");
+int main() {
 
-        printf("\n\n\tSAISISSEZ VOTRE CHOIX :");
 
-        scanf("%d",&ch);
 
-        switch(ch)
+    printf("\t*Bienvenu*\n");
+    int choixuser=0;
 
-        {
+
+    while(1){
+
+        printf("\n\t\tMENU PRINCIPAL:\n");
+
+        printf("\n\t[1]Ajouter une Rapport");
+
+        printf("\n\t[2]Quitter l'application");
+
+        printf("\n\tSAISISSEZ VOTRE CHOIX :");
+
+        scanf("%d", &choixuser);
+
+        switch (choixuser) {
 
             case 1:
 
-                new_report();
+                add_report();
 
                 break;
             case 2:
-
-                new_report1();
-
-                break;
-
-            case 6:
 
                 exit(0);
 
             default:
 
-                printf("\nSAISISSEZ UN NUMERO VALIDE");
-
-                printf("\nTAPEZ ENTREZ POUR REVENIR AU MENU");
-
-                break;
+                printf("\nChoisissez un numero valide");
 
         }
-
     }
+    return 0;}
 
-    return 0;
+void add_report(){
+    FILE* tasks = fopen("tasks3.yaml", "w");
+    report report1;
 
-}
-
-void new_report( )
-
-{
-
-    FILE *report ;
-
-    struct report e ;
-
-    char report_name[50];
-
-    int choice=0;
-
-    printf("\tSAISISSEZ DE NOUVEAU LE NOM DU RAPPORT (au format [RAPPORT suivi de la date du Jour]):");
-
-    fflush(stdin);
-
-    gets(report_name);
-
-    report = fopen (report_name, "w+" ) ;
-
-    if ( report == NULL )
-
+    if (tasks != NULL)
     {
 
-        {
+        printf("Dans quelle site etes-vous ?\n");
+        scanf("%s", report1.site_place);
 
-            printf("\nERREUR DETECTE...");
+        printf("Date creation (format : Jour/Mois/Annee) : ");
+        scanf("%s", report1.creation_date);
 
-            printf("\nTAPEZ ENTREZ POUR QUITTER");
-
-            return ;
-
-        }
-
-    }
-
-        else
-
-        {
+        printf("Activitees effectuees: ");
+        getchar() ;
+        scanf("%[^\n]", report1.activities);
 
 
-            printf("\tSAISISSEZ LE NOM DU RAPPORT(au format [RAPPORT suivi de la date du Jour]):");
 
-            fflush(stdin);
+        fprintf(tasks, "RAPPORT: \n\tSite: %s \n\tDate: %s \n\tActivitées éffectuées: \n", report1.site_place,report1.creation_date);
 
-            gets(e.report_name);
-
-            fflush(stdin);
-
-            printf("\tActivites a enregistrees:");
-
-            gets(e.activities);
-
-            fwrite ( &e, sizeof ( e ), 1, report ) ;
-
-            printf("\nVOTRE RAPPORT A BIEN ETE ENREGISTREE...\n");
-
+        const char * separators = " ";
+        // On cherche à récupérer, un à un, tous les mots (token) de la phrase
+        // et on commence par le premier.
+        char * strToken = strtok ( report1.activities, separators );
+        while ( strToken != NULL ) {
+            fseek(tasks, 0, SEEK_END);
+            fprintf ( tasks,"\t- %s:\n", strToken );
+            // On demande le token suivant.
+            strToken = strtok ( NULL, separators );
         }
 
 
-    fclose ( report );
 
 
-}
-void new_report1(){
-    FILE* report1 = fopen("report2.txt", "w");
-    report report;
-
-    if (report1 != NULL)
-    {
-
-        printf("Date creation rapport (format : Jour/Mois/Annee) : ");
-        scanf("%s", &report.creationdate);
-
-        printf("\nDe quel Site vient ce rapport : ");
-        scanf("%s", &report.site_place);
-
-        printf("\nCategorie de la tache: ");
-        scanf("%s", &report.activities);
-
-
-
-        fprintf(report1, "%s %s %s ", report.creationdate,report.site_place,report.activities);
-
-
-
-
-        fclose(report1);
+        fclose(tasks);
 
     }
     else

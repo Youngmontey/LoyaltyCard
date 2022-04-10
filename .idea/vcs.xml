@@ -3,5 +3,8 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vcpkg" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/zlib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/zlib/build/libxlsxwriter" vcs="Git" />
   </component>
 </project>
